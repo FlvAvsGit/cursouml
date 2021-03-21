@@ -8,11 +8,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.flavio.cursouml.domain.Categoria;
+import com.flavio.cursouml.domain.Cidade;
+import com.flavio.cursouml.domain.Estado;
 import com.flavio.cursouml.domain.Produto;
 import com.flavio.cursouml.repositories.CategoriaRepository;
+import com.flavio.cursouml.repositories.CidadeRepository;
+import com.flavio.cursouml.repositories.EstadoRepository;
 import com.flavio.cursouml.repositories.ProdutoRepository;
-
-import javassist.compiler.ast.ASTList;
 
 @SpringBootApplication
 public class CursoumlApplication implements CommandLineRunner {
@@ -21,6 +23,11 @@ public class CursoumlApplication implements CommandLineRunner {
 	private CategoriaRepository categoriaRepository;
 	@Autowired
 	private ProdutoRepository produtoRepository;
+	@Autowired
+	private CidadeRepository cidadeRepository;
+	@Autowired
+	private EstadoRepository estadoRepository;
+	
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursoumlApplication.class, args);
@@ -38,19 +45,18 @@ public class CursoumlApplication implements CommandLineRunner {
 		Produto p2 = new Produto(null, "Impressora", 800.00);
 		Produto p3 = new Produto(null, "Mouse", 80.00);
 		Produto p4 = new Produto(null, "Monitor LED", 1780.00);
-		Produto p5 = new Produto(null, "Ar Condicionado", 3000.00)
-;
-		
-// Adicionando Produtos aos objetos Cat1 e Cat2 (do tipo Categoria)
-		//cat1.getProdutos().addAll(Arrays.asList(p1, p2, p3, p4));
+		Produto p5 = new Produto(null, "Ar Condicionado", 3000.00);
+
+		// Adicionando Produtos aos objetos Cat1 e Cat2 (do tipo Categoria)
+		// cat1.getProdutos().addAll(Arrays.asList(p1, p2, p3, p4));
 		cat1.getProdutos().add(p1);
 		cat1.getProdutos().add(p2);
 		cat1.getProdutos().add(p3);
 		cat1.getProdutos().add(p4);
-		
+
 		cat2.getProdutos().addAll(Arrays.asList(p2, p5));
-	
-//	Adicionando Categorias aos objetos p1, p2, p3, p4, p5 (Do tipo Produtos)
+
+		// Adicionando Categorias aos objetos p1, p2, p3, p4, p5 (Do tipo Produtos)
 		p1.getCategorias().addAll(Arrays.asList(cat1));
 		p2.getCategorias().addAll(Arrays.asList(cat1, cat2));
 		p3.getCategorias().addAll(Arrays.asList(cat1));
@@ -59,5 +65,23 @@ public class CursoumlApplication implements CommandLineRunner {
 
 		categoriaRepository.saveAll(Arrays.asList(cat1, cat2));
 		produtoRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5));
+
+		// instanciando Estado
+		Estado est1 = new Estado(null, "Minas Gerais");
+		Estado est2 = new Estado(null, "Sao Paulo");
+
+		// Instanciando Cidade
+		Cidade c1 = new Cidade(null, "Uberlandia", est1);
+		Cidade c4 = new Cidade(null, "Lavras", est1); 
+	
+		Cidade c2 = new Cidade(null, "São Paulo", est2);
+		Cidade c3 = new Cidade(null, "Campinas", est2);
+	
+
+		est1.getCidades().addAll(Arrays.asList(c1, c4));
+		est2.getCidades().addAll(Arrays.asList(c2,c3));
+		estadoRepository.saveAll(Arrays.asList(est1, est2));
+		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3, c4));
+		
 	}
 }
