@@ -9,10 +9,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.flavio.cursouml.domain.Categoria;
 import com.flavio.cursouml.domain.Cidade;
+import com.flavio.cursouml.domain.Cliente;
+import com.flavio.cursouml.domain.Endereco;
 import com.flavio.cursouml.domain.Estado;
 import com.flavio.cursouml.domain.Produto;
+import com.flavio.cursouml.domain.enums.TipoCliente;
 import com.flavio.cursouml.repositories.CategoriaRepository;
 import com.flavio.cursouml.repositories.CidadeRepository;
+import com.flavio.cursouml.repositories.ClienteRepository;
+import com.flavio.cursouml.repositories.EnderecoRepository;
 import com.flavio.cursouml.repositories.EstadoRepository;
 import com.flavio.cursouml.repositories.ProdutoRepository;
 
@@ -27,8 +32,11 @@ public class CursoumlApplication implements CommandLineRunner {
 	private CidadeRepository cidadeRepository;
 	@Autowired
 	private EstadoRepository estadoRepository;
+	@Autowired
+	private ClienteRepository clienteRepository;
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 	
-
 	public static void main(String[] args) {
 		SpringApplication.run(CursoumlApplication.class, args);
 	}
@@ -83,5 +91,15 @@ public class CursoumlApplication implements CommandLineRunner {
 		estadoRepository.saveAll(Arrays.asList(est1, est2));
 		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3, c4));
 		
+		//cliente 
+		Cliente cli1 = new Cliente(null, "Maria Silva", "Maria@email.com", "00458294732", 	TipoCliente.PESSOAFISICA);
+		
+		//Endereco
+		Endereco e1 = new Endereco (null, "Rua Flores", "300", "apto 203", "Jardim", "03273090" , cli1, c1); 	 	
+		Endereco e2 = new Endereco (null, "Av Paulista", "400", "apto 500", "Bela Vista", "90944010", cli1, c2);
+		
+		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+		clienteRepository.saveAll(Arrays.asList(cli1));
+		enderecoRepository.saveAll(Arrays.asList(e1, e2))	;
 	}
 }
